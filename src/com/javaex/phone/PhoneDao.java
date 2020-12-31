@@ -55,6 +55,47 @@ public class PhoneDao {
 			System.out.println("error:" + e);
 		}
 	}
+	
+	//phone 검색
+	public List<PersonVo> phonesearchList(String search) {
+		getConnection();
+		
+		List<PersonVo> phonesearchList = new ArrayList<PersonVo>();
+		
+		try {
+			// SQL문 준비/ 바인딩 / 실행
+			String query = "";
+			query += " SELECT person_id, " ;			
+			query += "  	  name, ";
+			query += " 		  hp, ";
+			query += " 	  	  company ";
+			query += " FROM person ";
+			query += " where name like " +" '%' " + search +" ''%'' ";
+			query += " or name like " +" '%' " + search +" ''%'' ";
+			query += " or company like " + " '%' " + search +" ''%'' ";
+			
+			pstmt = conn.prepareStatement(query);
+			rs = pstmt.executeQuery();
+			
+			// 결과처리
+			while(rs.next()) {
+				int personId = rs.getInt("person_id");
+				String name = rs.getString("name");
+				String hp = rs.getString("hp");
+				String company = rs.getString("company");
+				PersonVo vo = new PersonVo(personId, name, hp, company);
+				phonesearchList.add(vo);
+				
+			}
+		} catch (SQLException e) {
+			System.out.println("error:" + e);
+		}
+		// 자원정리
+		close();
+
+		
+		return phonesearchList;
+	}
 
 	// phone 수정
 	public int personUpdate(PersonVo personVo) {

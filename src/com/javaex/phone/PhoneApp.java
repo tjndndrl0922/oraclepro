@@ -9,10 +9,11 @@ public class PhoneApp {
 
 		Scanner sc = new Scanner(System.in);
 		int num, personId;
-		String name, hp, company;
+		String name, hp, company, like;
 		boolean bool = true;
 		PhoneDao phoneDao = new PhoneDao();
 		List<PersonVo> phoneList;
+		List<PersonVo> phonesearchList;
 
 		System.out.println("**********************************************");
 		System.out.println("* 		                     전화번호 관리 프로그램                    	  *");
@@ -26,7 +27,7 @@ public class PhoneApp {
 
 			case 1: // select
 				System.out.println("<1. 리스트>");
-				
+
 				phoneList = phoneDao.getPersonList();
 				for (int i = 0; i < phoneList.size(); i++) {
 					PersonVo vo = phoneList.get(i);
@@ -37,13 +38,14 @@ public class PhoneApp {
 
 			case 2: // insert
 				System.out.println("<2. 등록>");
-				System.out.print("이름 > ");
+				
+				System.out.println("이름 > ");
 				name = sc.nextLine();
 
-				System.out.print("휴대전화 > ");
+				System.out.println("휴대전화 > ");
 				hp = sc.nextLine();
 
-				System.out.print("회사번호 > ");
+				System.out.println("회사번호 > ");
 				company = sc.nextLine();
 
 				PersonVo personVo = new PersonVo(name, hp, company);
@@ -54,6 +56,7 @@ public class PhoneApp {
 
 			case 3: // update
 				System.out.println("<3. 수정>");
+				
 				System.out.println("번호 > ");
 				personId = sc.nextInt();
 
@@ -74,27 +77,37 @@ public class PhoneApp {
 
 			case 4:
 				System.out.println("<4. 삭제>");
+				
 				System.out.println(">번호 :");
 				personId = sc.nextInt();
-				
+
 				phoneDao.personDelete(personId);
 				System.out.println("[1건 삭제 되었습니다.]");
 				break;
 
 			case 5:
 				System.out.println("<5. 검색>");
-				System.out.println("검색어 >");
-				break;
 				
-			case 6 :
+				System.out.println("검색어 >");
+
+				like = sc.nextLine();
+				phonesearchList = phoneDao.phonesearchList(like);
+				for (int i = 0; i < phonesearchList.size(); i++) {
+					PersonVo vo = phonesearchList.get(i);
+					System.out.println(
+							vo.getPerson_id() + ", " + vo.getName() + ", " + vo.getHp() + ", " + vo.getCompany());
+				}
+				break;
+
+			case 6:
 				System.out.println(">메뉴번호: ");
 				System.out.println("**********************************************");
 				System.out.println("* 		                    감사합니다                    	  *");
 				System.out.println("**********************************************");
 				bool = false;
 				break;
-			
-			default :
+
+			default:
 				System.out.println("[다시 입력해주세요.]");
 				break;
 			}

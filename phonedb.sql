@@ -56,3 +56,13 @@ where person_id = ?;
 --delete 문
 delete from person
 where person_id = ?;
+
+--검색 문
+SELECT person_id,
+        name,
+        hp,
+        company
+FROM person
+where name like '%?%'
+or name like '%?%'
+or company like '%?%';
