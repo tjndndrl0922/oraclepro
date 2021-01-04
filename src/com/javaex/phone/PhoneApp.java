@@ -88,9 +88,9 @@ public class PhoneApp {
 			case 5:
 				System.out.println("<5. 검색>");
 				
-				System.out.println("검색어 >");
-
+				System.out.print("검색어 >");
 				like = sc.nextLine();
+				
 				phonesearchList = phoneDao.phonesearchList(like);
 				for (int i = 0; i < phonesearchList.size(); i++) {
 					PersonVo vo = phonesearchList.get(i);
