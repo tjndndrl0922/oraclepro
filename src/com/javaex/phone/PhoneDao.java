@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class PhoneDao {
 
 	// 필드
@@ -70,11 +71,14 @@ public class PhoneDao {
 			query += " 		  hp, ";
 			query += " 	  	  company ";
 			query += " FROM person ";
-			query += " where name like " +" '%' " + search +" ''%'' ";
-			query += " or name like " +" '%' " + search +" ''%'' ";
-			query += " or company like " + " '%' " + search +" ''%'' ";
+			query += " where name like ? ";
+			query += " or hp like  ? " ;
+			query += " or company like  ? " ;
 			
 			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, '%' + search + '%');
+			pstmt.setString(2, '%' + search + '%');
+			pstmt.setString(3, '%' + search + '%');
 			rs = pstmt.executeQuery();
 			
 			// 결과처리
@@ -109,8 +113,7 @@ public class PhoneDao {
 			query += " 	   hp = ?, ";
 			query += " 	   company = ? ";
 			query += " where person_id = ? ";
-			
-			System.out.println(query);
+		
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, personVo.getName());
 			pstmt.setString(2, personVo.getHp());
@@ -139,7 +142,6 @@ public class PhoneDao {
 			query += " delete from person ";
 			query += " where person_id = ? ";
 
-			System.out.println(query);
 			pstmt = conn.prepareStatement(query);
 			pstmt.setInt(1, personId);
 
@@ -155,7 +157,7 @@ public class PhoneDao {
 
 		return count;
 	}
-
+	
 	// phone 리스트
 	public List<PersonVo> getPersonList() {
 		getConnection();
@@ -200,7 +202,7 @@ public class PhoneDao {
 			// SQL문 준비/ 바인딩 / 실행
 			String query = "";
 			query += " insert into person ";
-			query += " values(person_id.nextval, ?, ?, ?) ";
+			query += " values(seq_person_id.nextval, ?, ?, ?) ";
 
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, personVo.getName());
